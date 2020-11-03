@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'first_widgets.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -29,12 +31,13 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-
+  FirstWidgetController _controller;
   void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
+    _controller?.ping();
+    _controller?.showToast("Hello from dart world");
+
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -43,17 +46,16 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+        child: FirstWidget(
+          onFirstWidgetWidgetCreated: (controller){
+            _controller=controller;
+            _controller.addListener((i) {
+              print("print count:$i");
+              _controller?.showToast("Count from native :$i");
+
+            });
+
+          },
         ),
       ),
       floatingActionButton: FloatingActionButton(
